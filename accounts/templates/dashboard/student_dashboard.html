@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold m-0">Welcome back, {{ user.first_name|default:user.username }}! 👋</h2>
+        <p class="text-muted">Track your progress and continue your learning journey.</p>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-12">
+        {% if not has_started_revision %}
+            <div class="card border-0 shadow-sm rounded-4 bg-light border-start border-info border-5">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-1">Start Your Journey 🚀</h5>
+                        <p class="text-muted mb-0">Take your first quiz to build your smart revision schedule.</p>
+                    </div>
+                    <a href="#courses-section" class="btn btn-info text-white rounded-pill px-4 shadow-sm fw-bold">
+                        Browse Courses
+                    </a>
+                </div>
+            </div>
+
+        {% elif rev_count > 0 %}
+            <div class="card border-0 shadow-sm rounded-4 bg-white border-start border-primary border-5 animate__animated animate__pulse">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-1">Daily Revision Goal</h5>
+                        <p class="text-muted mb-0">You have <strong>{{ rev_count }} questions</strong> scheduled for review today.</p>
+                    </div>
+                    <a href="{% url 'daily_revision' %}" class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold">
+                        Start Review <i class="bi bi-arrow-right ms-1"></i>
+                    </a>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="card border-0 shadow-sm rounded-4 bg-success text-white animate__animated animate__fadeIn">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="fw-bold mb-1">
+                            <i class="bi bi-patch-check-fill me-2"></i> Daily Goal Completed!
+                        </h4>
+                        <p class="mb-0 opacity-75">All caught up! You've mastered your tasks for today.</p>
+                    </div>
+                    <div class="display-4 opacity-50 d-none d-md-block">
+                        <i class="bi bi-trophy-fill"></i>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<h4 class="fw-bold mb-3" id="courses-section"><i class="bi bi-play-circle-fill me-2 text-primary"></i>My Enrolled Courses</h4>
+<div class="row g-4 mb-5">
+    {% for enrollment in enrolled_courses %}
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-4">
+            <div class="bg-primary p-3 text-white">
+                <h5 class="m-0 fw-bold text-truncate">{{ enrollment.course.title }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <small class="text-muted d-block">Access Type:</small>
+                    {% if enrollment.is_trial %}
+                    <span class="badge bg-warning text-dark">7-Day Trial</span>
+                    {% else %}
+                    <span class="badge bg-success">Full Access</span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <small class="text-muted d-block small">Expiry Date: {{ enrollment.expiry_date|date:"M d, Y" }}</small>
+                </div>
+                <a href="{% url 'course_detail' enrollment.course.id %}" class="btn btn-dark w-100 py-2 rounded-3">Continue Learning</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5 bg-white shadow-sm rounded-4">
+        <i class="bi bi-journal-x display-4 text-muted mb-3 d-block"></i>
+        <p class="text-muted mb-0">You are not enrolled in any courses yet.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<h4 class="fw-bold mb-3"><i class="bi bi-grid-fill me-2 text-primary"></i>Explore New Courses</h4>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for course in available_courses %}
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm p-3 rounded-4">
+            <h6 class="fw-bold mb-2">{{ course.title }}</h6>
+            <div class="mt-auto">
+                <p class="text-primary fw-bold mb-2">{% if course.is_free %}Free{% else %}Rs. {{ course.price }}{% endif %}</p>
+                <a href="{% url 'course_detail' course.id %}" class="btn btn-sm btn-outline-dark w-100 rounded-pill">See Details</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s ease-in-out;
+    }
+    .card:hover {
+        transform: translateY(-3px);
+    }
+</style>
+
+{% endblock %}

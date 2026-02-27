@@ -1,0 +1,11 @@
+### Login
+POST http://127.0.0.1:8000/api/token/
+Content-Type: application/json
+
+{
+  "username": "student0",
+  "password": "password123"
+}
+
+### List Courses
+GET http://127.0.0.1:8000/api/courses/

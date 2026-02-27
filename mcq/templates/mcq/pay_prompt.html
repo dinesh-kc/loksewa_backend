@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 text-center">
+        <div class="card border-0 shadow-lg p-5">
+            <div class="mb-4">
+                <i class="bi bi-lock-fill text-danger display-1"></i>
+            </div>
+            <h2 class="fw-bold mb-3">Daily Limit Reached!</h2>
+            <p class="text-muted lead mb-4">You have used your 5 free MCQs for today. To unlock unlimited practice and premium articles, please enroll in this course.</p>
+            
+            <div class="alert alert-primary py-3 mb-4">
+                <h6 class="fw-bold mb-1">To Enroll & Pay:</h6>
+                <p class="mb-0">Please contact Admin at: <strong>+977 98XXXXXXXX</strong></p>
+                <small>(Payment via eSewa / Khalti accepted manually)</small>
+            </div>
+
+            <div class="d-grid gap-2">
+                <a href="/" class="btn btn-dark py-2">Back to Dashboard</a>
+                <button class="btn btn-primary py-2" onclick="window.print()">Print Details</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

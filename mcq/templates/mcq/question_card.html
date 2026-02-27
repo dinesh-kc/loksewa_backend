@@ -1,0 +1,59 @@
+<div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+                <span class="badge {% if q.difficulty == 'EASY' %}bg-success text-white{% elif q.difficulty == 'MEDIUM' %}bg-warning text-dark{% else %}bg-danger text-white{% endif %} px-3 py-1 small">
+                    {{ q.difficulty }}
+                </span>
+                {% if show_topic_badge %}
+                <span class="badge bg-info-subtle text-dark border ms-1">{{ q.topic.title }}</span>
+                {% endif %}
+            </div>
+            
+            <button class="btn btn-link p-0 bookmark-btn text-decoration-none shadow-none" data-id="{{ q.id }}">
+                <i class="bi {% if q.id in user_bookmarks %}bi-bookmark-fill text-primary{% else %}bi-bookmark text-muted{% endif %} fs-5"></i>
+            </button>
+        </div>
+
+        <h5 class="fw-bold mb-4" style="line-height: 1.6; font-size: 1.15rem;">
+            <span class="text-primary me-2">{{ forloop.counter }}.</span> 
+            {{ q.question_text }}
+        </h5>
+
+        <div class="row g-3">
+            {% for choice in q.choices.all %}
+            <div class="col-12 col-md-6">
+                <div class="option-box p-3 border rounded-3 bg-white d-flex align-items-center shadow-sm">
+                    <div class="choice-circle me-3">
+                        {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% else %}{{ forloop.counter }}{% endif %}
+                    </div>
+                    <span class="small fw-medium">{{ choice.option_text }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="mt-4">
+            <button class="btn btn-sm btn-outline-dark w-100 rounded-pill py-2 shadow-sm fw-bold mb-2" type="button"
+                data-bs-toggle="collapse" data-bs-target="#ans{{ q.id }}">
+                <i class="bi bi-lightbulb me-2"></i> View Correct Answer
+            </button>
+
+            <div class="collapse mt-3" id="ans{{ q.id }}">
+                <div class="p-3 bg-light rounded-3 border-start border-success border-4 shadow-sm">
+                    <h6 class="fw-bold text-success mb-2">
+                        <i class="bi bi-check-circle-fill me-2"></i>Correct Answer: 
+                        {% for choice in q.choices.all %}
+                            {% if choice.is_correct %}{{ choice.option_text }}{% endif %}
+                        {% endfor %}
+                    </h6>
+                    {% if q.explanation %}
+                    <div class="small text-muted mb-0 mt-2 border-top pt-2">
+                        <strong>Explanation:</strong> {{ q.explanation }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row mb-5 align-items-center">
+    <div class="col-md-7">
+        <h1 class="display-4 fw-bold text-dark">Master Your Exams with <span class="text-primary">Smart MCQ</span></h1>
+        <p class="lead text-muted">Access thousands of unit-wise MCQs, detailed articles, and expert guidance for Loksewa and Computer preparation.</p>
+        <a href="#courses" class="btn btn-primary btn-lg px-4">Browse Courses</a>
+    </div>
+</div>
+
+<h3 class="fw-bold mb-4" id="courses">Featured Courses</h3>
+<div class="row g-4 mb-5">
+    {% for course in courses %}
+    <div class="col-md-4">
+        <div class="card shadow-sm h-100 p-3">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-bold">{{ course.title }}</h5>
+                <p class="text-muted small">{{ course.description|truncatewords:15 }}</p>
+                <div class="mt-auto">
+                    <span class="badge {% if course.is_free %}bg-success{% else %}bg-primary{% endif %} mb-3">
+                        {% if course.is_free %}FREE{% else %}Rs. {{ course.price }}{% endif %}
+                    </span>
+                    <a href="{% url 'course_detail' course.id %}" class="btn btn-outline-dark w-100">Enroll Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<h3 class="fw-bold mb-4">Latest Study Articles</h3>
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="fw-bold">Tips for Cracking Computer Operator Exams</h5>
+                <p class="text-muted small">Learn the most common patterns and important topics asked in the latest Loksewa computer exams...</p>
+                <a href="#" class="btn btn-link p-0 text-decoration-none">Read More &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

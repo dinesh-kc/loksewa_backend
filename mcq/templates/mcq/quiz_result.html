@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-9 mx-auto">
+            <div class="card border-0 shadow-sm rounded-4 mb-5 overflow-hidden animate__animated animate__fadeIn">
+                <div class="card-header bg-dark text-white py-4 text-center">
+                    <h2 class="fw-bold m-0">Performance Report</h2>
+                    <span class="badge bg-primary mt-2 px-3 py-2 rounded-pill">{{ topic.title }}</span>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row text-center g-4">
+                        <div class="col-md-3">
+                            <h2 class="fw-extrabold {% if score > 0 %}text-success{% else %}text-danger{% endif %} mb-0">{{ score|floatformat:2 }}</h2>
+                            <p class="text-muted small fw-bold">FINAL SCORE</p>
+                        </div>
+                        <div class="col-md-3 border-start">
+                            <h2 class="text-success mb-0">{{ correct }}</h2>
+                            <p class="text-muted small fw-bold">CORRECT</p>
+                        </div>
+                        <div class="col-md-3 border-start">
+                            <h2 class="text-danger mb-0">{{ wrong }}</h2>
+                            <p class="text-muted small fw-bold">WRONG (-0.25)</p>
+                        </div>
+                        <div class="col-md-3 border-start">
+                            <h2 class="text-secondary mb-0">{{ unattempted }}</h2>
+                            <p class="text-muted small fw-bold">SKIPPED</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="fw-bold mb-4 d-flex align-items-center">
+                <i class="bi bi-journal-check me-2 text-primary"></i> Question Review
+            </h4>
+
+            {% for q in questions %}
+            <div class="card border-0 shadow-sm mb-4 rounded-4 animate__animated animate__fadeInUp" style="animation-delay: {{ forloop.counter0|add:1 }}00ms">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge {% if q.is_correct_in_quiz %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} border rounded-pill px-3">
+                            {% if q.is_correct_in_quiz %}Correct{% else %}Incorrect/Skipped{% endif %}
+                        </span>
+                        
+                        <button class="btn btn-link p-0 bookmark-btn text-decoration-none shadow-none" data-id="{{ q.id }}">
+                            <i class="bi {% if q.id in user_bookmarks %}bi-bookmark-fill text-primary{% else %}bi-bookmark text-muted{% endif %} fs-5"></i>
+                        </button>
+                    </div>
+
+                    <h5 class="fw-bold mb-4">{{ forloop.counter }}. {{ q.question_text }}</h5>
+
+                    <div class="row g-2 mb-3">
+                        {% for choice in q.choices.all %}
+                        <div class="col-md-6">
+                            <div class="p-3 border rounded-3 small d-flex align-items-center 
+                                {% if choice.is_correct %}bg-success-subtle border-success text-success fw-bold{% else %}bg-light text-muted{% endif %}">
+                                <span class="me-2">
+                                    {% if choice.is_correct %}<i class="bi bi-check-circle-fill"></i>{% else %}<i class="bi bi-circle"></i>{% endif %}
+                                </span>
+                                {{ choice.option_text }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    {% if q.explanation %}
+                    <div class="alert alert-secondary border-0 rounded-3 mt-3 mb-0">
+                        <strong class="small d-block mb-1 text-dark"><i class="bi bi-info-circle me-1"></i> Explanation:</strong>
+                        <p class="small mb-0 text-muted">{{ q.explanation }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="text-center my-5">
+               <div class="text-center my-5">
+    {% if topic.id %}
+        <a href="{% url 'quiz_mode' topic.id %}" class="btn btn-dark btn-lg px-5 rounded-pill shadow me-2">Retake Quiz</a>
+        <a href="{% url 'topic_detail' topic.id %}" class="btn btn-outline-primary btn-lg px-5 rounded-pill shadow">Back to Study</a>
+    {% else %}
+        <a href="?mode=quiz" class="btn btn-dark btn-lg px-5 rounded-pill shadow me-2">Retake Bookmark Quiz</a>
+        <a href="{% url 'course_bookmarks' course.id %}" class="btn btn-outline-primary btn-lg px-5 rounded-pill shadow">Back to Bookmarks</a>
+    {% endif %}
+</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.bookmark-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const qId = this.dataset.id;
+            const icon = this.querySelector('i');
+            
+            fetch(`/quiz/bookmark/${qId}/`, { 
+                method: 'POST',
+                headers: { 
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    icon.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+                    icon.classList.add('text-primary');
+                    icon.classList.remove('text-muted');
+                } else {
+                    icon.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+                    icon.classList.remove('text-primary');
+                    icon.classList.add('text-muted');
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    body { background-color: #f0f2f5; }
+    .bg-success-subtle { background-color: #d1e7dd !important; }
+    .bg-danger-subtle { background-color: #f8d7da !important; }
+    .card { border: none !important; }
+    .fw-extrabold { font-weight: 900; }
+</style>
+{% endblock %}

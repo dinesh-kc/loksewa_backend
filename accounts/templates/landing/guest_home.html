@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white py-5 mb-5 rounded-4 shadow-sm">
+    <div class="container text-center py-5">
+        <h1 class="display-3 fw-bold">Your Gateway to <span class="text-primary">Loksewa Success</span></h1>
+        <p class="lead text-muted mx-auto" style="max-width: 700px;">Expert-led courses, unit-wise MCQ practice, and comprehensive study materials designed for your career growth.</p>
+        <div class="mt-4">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-5 shadow">Get Started for Free</a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <h3 class="fw-bold mb-4">Latest Preparation Articles</h3>
+        <article class="card mb-4 border-0 shadow-sm">
+            <div class="card-body">
+                <span class="badge bg-info mb-2 text-dark">Tips & Tricks</span>
+                <h4 class="fw-bold">How to manage time in MCQ exams?</h4>
+                <p class="text-muted small">Managing time is the biggest challenge in competitive exams. In this article, we discuss the 3-round strategy for solving MCQs efficiently...</p>
+                <a href="#" class="text-primary fw-bold text-decoration-none small">READ FULL ARTICLE &rarr;</a>
+            </div>
+        </article>
+        
+        <h3 class="fw-bold mb-4">Top Courses</h3>
+        <div class="row g-3">
+            {% for course in courses %}
+            <div class="col-md-6">
+                <div class="card h-100 border-0 shadow-sm p-2">
+                    <div class="card-body">
+                        <h6 class="fw-bold mb-1">{{ course.title }}</h6>
+                        <small class="text-muted d-block mb-3">{{ course.subject_set.count }} Subjects</small>
+                        <a href="{% url 'course_detail' course.id %} " class="btn btn-sm btn-outline-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-primary text-white p-4 mb-4 border-0">
+            <h5>Start Your Trial!</h5>
+            <p class="small">Register now to get 7 days free access to premium computer courses.</p>
+            <a href="{% url 'register' %}" class="btn btn-light btn-sm fw-bold">Sign Up Now</a>
+        </div>
+        <div class="card border-0 shadow-sm p-3">
+            <h6 class="fw-bold">Trending Topics</h6>
+            <ul class="list-unstyled small">
+                <li class="mb-2"><a href="#" class="text-decoration-none text-dark"># Computer Operator Prep</a></li>
+                <li class="mb-2"><a href="#" class="text-decoration-none text-dark"># Daily G.K. Quiz</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

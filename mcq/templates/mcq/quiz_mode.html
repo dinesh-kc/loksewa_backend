@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4 sticky-top bg-white py-2 shadow-sm px-3 rounded-pill">
+        <h5 class="fw-bold m-0 text-primary d-none d-md-block">{{ topic.title }}</h5>
+        <div class="badge bg-dark fs-6 p-2 rounded-pill">
+            <i class="bi bi-stopwatch me-1"></i> Time: <span id="timer-display">Loading...</span>
+        </div>
+        <button type="button" onclick="confirmSubmit()" class="btn btn-danger btn-sm rounded-pill px-4">Finish</button>
+    </div>
+
+    <form method="POST" id="quizForm">
+        {% csrf_token %}
+        {% for q in questions %}
+        <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+            <div class="card-body p-4">
+                <h6 class="fw-bold mb-3">{{ forloop.counter }}. {{ q.question_text }}</h6>
+                <div class="row g-2">
+                    {% for choice in q.choices.all %}
+                    <div class="col-md-6">
+                        <input type="radio" name="q_{{ q.id }}" value="{{ choice.id }}" class="btn-check" id="c{{ choice.id }}">
+                        <label class="btn btn-outline-secondary w-100 text-start p-3 rounded-3 choice-btn" for="c{{ choice.id }}">
+                            {{ choice.option_text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+</div>
+
+<script>
+    // Timer Logic: 15s per question
+    const totalQuestions = {{ questions|length }};
+    let timeInSeconds = totalQuestions * 15;
+    const display = document.querySelector('#timer-display');
+
+    function startTimer() {
+        const timer = setInterval(function () {
+            let minutes = Math.floor(timeInSeconds / 60);
+            let seconds = timeInSeconds % 60;
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timeInSeconds < 0) {
+                clearInterval(timer);
+                alert("Time is up! Submitting your quiz.");
+                document.getElementById('quizForm').submit();
+            }
+        }, 1000);
+    }
+
+    function confirmSubmit() {
+        if(confirm("Are you sure you want to submit?")) {
+            document.getElementById('quizForm').submit();
+        }
+    }
+
+    window.onload = startTimer;
+</script>
+
+<style>
+    .choice-btn:hover { background: #f8f9fa; border-color: #0d6efd; }
+    .btn-check:checked + .choice-btn { background: #0d6efd !important; color: #fff !important; border-color: #0d6efd; }
+    .sticky-top { top: 20px; z-index: 1020; }
+</style>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <aside class="col-lg-3 mb-4">
+        <div class="bg-white rounded shadow-sm overflow-hidden p-3 border">
+            <h6 class="text-uppercase fw-bold text-muted mb-3 small">Course Curriculum</h6>
+            <div class="accordion accordion-flush" id="courseAccordion">
+                {% for subject in course.subject_set.all %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#subject{{ subject.id }}">
+                            {{ subject.title }}
+                        </button>
+                    </h2>
+                    <div id="subject{{ subject.id }}" class="accordion-collapse collapse" data-bs-parent="#courseAccordion">
+                        <div class="accordion-body p-0">
+                            {% for unit in subject.unit_set.all %}
+                            <div class="bg-light px-3 py-2 border-bottom fw-bold small text-secondary">Unit: {{ unit.title }}</div>
+                            <div class="list-group list-group-flush">
+                                {% for topic in unit.topic_set.all %}
+                                <a href="{% url 'topic_detail' topic.id %}" class="list-group-item list-group-item-action border-0 ps-4 py-2 small">
+                                    <i class="bi bi-file-text me-2"></i>{{ topic.title }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+
+    <main class="col-lg-9">
+        <div class="bg-white rounded shadow-sm p-4 border min-vh-100">
+            {% block topic_content %}
+            <div class="text-center py-5">
+                <img src="https://cdn-icons-png.flaticon.com/512/3209/3209265.png" width="100" class="mb-3 opacity-50">
+                <h4 class="fw-bold">Start Learning</h4>
+                <p class="text-muted">Select a topic from the sidebar to view articles and start unit-wise MCQs.</p>
+            </div>
+            {% endblock %}
+        </div>
+    </main>
+</div>
+{% endblock %}

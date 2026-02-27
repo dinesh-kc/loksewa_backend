@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<div class="d-flex gap-2 mt-2">
+    <a href="?mode=study"
+       class="btn btn-sm {% if mode == 'study' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+        Study Mode
+    </a>
+
+    <a href="{% url 'quiz_mode' topic.id %}"
+       class="btn btn-sm {% if mode == 'quiz' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+        Quiz Mode
+    </a>
+</div>
+
+
+<div class="container py-3">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small bg-light p-2 rounded shadow-sm">
+            <li class="breadcrumb-item">
+                <a href="/" class="text-decoration-none">Home</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'course_detail' topic.unit.subject.course.id %}" class="text-decoration-none">
+                    {{ topic.unit.subject.course.title }}
+                </a>
+            </li>
+            <li class="breadcrumb-item active">{{ topic.title }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <div>
+                    <h4 class="fw-bold m-0 text-primary">{{ topic.title }}</h4>
+                    <p class="text-muted small mb-0">Select the correct option to practice.</p>
+                </div>
+                <span class="badge bg-dark px-3 py-2 rounded-pill">MCQ Practice</span>
+            </div>
+
+            {% if questions %}
+                {% for q in questions %}
+                <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+                    <div class="card-body p-4">
+
+                        <!-- Difficulty + Bookmark -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge 
+                                {% if q.difficulty == 'EASY' %}bg-success
+                                {% elif q.difficulty == 'MEDIUM' %}bg-warning text-dark
+                                {% else %}bg-danger
+                                {% endif %}
+                                px-3 py-1 small">
+                                {{ q.difficulty }}
+                            </span>
+
+                            <button class="btn btn-link p-0 bookmark-btn"
+                                    data-id="{{ q.id }}" type="button">
+                                <i class="bi 
+                                    {% if q.id in user_bookmarks %}
+                                        bi-bookmark-fill text-primary
+                                    {% else %}
+                                        bi-bookmark text-muted
+                                    {% endif %}
+                                    fs-5"></i>
+                            </button>
+                        </div>
+
+                        <!-- Question Text -->
+                        <h5 class="fw-bold mb-4" style="line-height:1.6; font-size:1.15rem;">
+                            <span class="text-primary me-2">
+                                {{ forloop.counter0|add:questions.start_index }}.
+                            </span>
+                            {{ q.question_text }}
+                        </h5>
+
+                        <!-- Options -->
+                        <div class="row g-3">
+                            {% for choice in q.choices.all %}
+                            <div class="col-12 col-md-6">
+                                <div class="option-box p-3 border rounded-3 bg-white d-flex align-items-center shadow-sm">
+                                    
+                                    <div class="choice-circle me-3">
+                                        {% if forloop.counter == 1 %}
+                                            A
+                                        {% elif forloop.counter == 2 %}
+                                            B
+                                        {% elif forloop.counter == 3 %}
+                                            C
+                                        {% elif forloop.counter == 4 %}
+                                            D
+                                        {% else %}
+                                            {{ forloop.counter }}
+                                        {% endif %}
+                                    </div>
+
+                                    <span class="small fw-medium">
+                                        {{ choice.option_text }}
+                                    </span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Answer Toggle -->
+                        <div class="mt-4">
+                            <button class="btn btn-sm btn-outline-dark w-100 rounded-pill py-2 shadow-sm fw-bold mb-2"
+                                type="button" data-bs-toggle="collapse" data-bs-target="#ans{{ q.id }}">
+                                View Correct Answer
+                            </button>
+
+                            <div class="collapse mt-3" id="ans{{ q.id }}">
+                                <div class="p-3 bg-light rounded-3 border-start border-success border-4 shadow-sm">
+                                    <h6 class="fw-bold text-success mb-2">
+                                        Correct Answer:
+                                        {% for choice in q.choices.all %}
+                                            {% if choice.is_correct %}
+                                                {{ choice.option_text }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </h6>
+
+                                    {% if q.explanation %}
+                                    <div class="small text-muted mt-2 border-top pt-2">
+                                        <strong>Explanation:</strong> {{ q.explanation }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info text-center">
+                    No questions available for this topic.
+                </div>
+            {% endif %}
+
+            <!-- Pagination -->
+            <div class="pagination-area mt-5 border-top pt-4">
+                <nav>
+                    <ul class="pagination justify-content-center align-items-center">
+
+                        {% if questions.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link shadow-sm border-0 me-3"
+                               href="?page={{ questions.previous_page_number }}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        <li class="mx-3">
+                            <span class="fw-bold text-muted small">
+                                Page {{ questions.number }} of {{ questions.paginator.num_pages }}
+                            </span>
+                        </li>
+
+                        {% if questions.has_next %}
+                        <li class="page-item">
+                            <a class="page-link shadow-sm border-0 ms-3"
+                               href="?page={{ questions.next_page_number }}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Bookmark Script -->
+<script>
+// 1. getCookie function define garne (CSRF token nikalna)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.querySelectorAll('.bookmark-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const qId = this.dataset.id;
+        const icon = this.querySelector('i');
+        
+        // 2. URL check: Yadi hajurko urls.py ma name='toggle_bookmark' chha bhane
+        // `/quiz/bookmark/${qId}/` athawa hajurko exact path rakhnuhos
+        // Maile yaha `/quiz/bookmark/` rakheko chhu, path milena bhane check garnuhos
+        fetch(`/quiz/bookmark/${qId}/`, { 
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                // Yadi 404 aayo bhane thaha hunchha
+                console.error("URL not found! Check your urls.py path.");
+                return response.text().then(text => { throw new Error(text) });
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'added') {
+                icon.classList.replace('bi-bookmark', 'bi-bookmark-fill');
+                icon.classList.add('text-primary');
+                icon.classList.remove('text-muted');
+            } else if (data.status === 'removed') {
+                icon.classList.replace('bi-bookmark-fill', 'bi-bookmark');
+                icon.classList.remove('text-primary');
+                icon.classList.add('text-muted');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("Bookmark update garna sakiyena. URL path check garnuhos.");
+        });
+    });
+});
+</script>
+
+
+<!-- Styles -->
+<style>
+body { background-color:#f8f9fa; }
+
+.option-box {
+    transition:0.2s;
+    border:1px solid #dee2e6;
+}
+
+.option-box:hover {
+    border-color:#0d6efd;
+    background:#f8f9ff;
+}
+
+.choice-circle {
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:#e9ecef;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:0.85rem;
+}
+
+.page-link {
+    width:40px;
+    height:40px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#fff;
+}
+
+.card {
+    border-radius:1rem;
+}
+</style>
+
+{% endblock %}

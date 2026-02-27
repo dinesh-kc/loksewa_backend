@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="mb-4">Explore Our Courses</h2>
+<div class="row">
+    {% for course in courses %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-3">
+            <div class="card-body">
+                <h5 class="card-title fw-bold text-primary">{{ course.title }}</h5>
+                <p class="text-muted small">{{ course.description|truncatewords:20 }}</p>
+                <div class="mb-3">
+                    <span class="badge bg-success">Price: Rs. {{ course.price }}</span>
+                    {% if course.is_trial_available %}
+                    <span class="badge bg-info">Trial Available</span>
+                    {% endif %}
+                </div>
+                <a href="#" class="btn btn-dark w-100">Enroll Now</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

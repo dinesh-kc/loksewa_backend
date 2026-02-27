@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% if enrollment %}
+    <div class="alert {% if course.is_free %}alert-success{% else %}alert-info{% endif %} py-2 px-3 shadow-sm border-0 d-flex justify-content-between align-items-center mb-3 small">
+        <div>
+            {% if course.is_free %}
+                <i class="bi bi-infinity me-1"></i> <strong>LIFETIME ACCESS</strong>
+            {% else %}
+                <i class="bi bi-clock-history me-1"></i> 
+                <strong>{% if enrollment.is_trial %}TRIAL{% else %}ACTIVE{% endif %}:</strong> 
+                Expires {{ enrollment.expiry_date|date:"M d" }}
+            {% endif %}
+        </div>
+        <a href="#curriculum" class="btn btn-sm btn-dark py-0 px-2" style="font-size: 0.75rem;">Jump to Lessons</a>
+    </div>
+{% endif %}
+
+<div class="row bg-dark text-white p-4 rounded-3 mb-4 shadow align-items-center">
+    <div class="col-md-9">
+        <h2 class="fw-bold mb-1">{{ course.title }}</h2>
+        <p class="text-white-50 small mb-3">{{ course.description|truncatewords:15 }}</p>
+        
+        <div class="d-flex flex-wrap gap-2">
+            {% if not enrollment %}
+                {% if course.is_free %}
+                    <a href="{% url 'start_enrollment' course.id %}" class="btn btn-success btn-sm px-4 fw-bold">Enroll Free</a>
+                {% else %}
+                    <a href="{% url 'start_enrollment' course.id %}" class="btn btn-primary btn-sm px-4 fw-bold">Start {{ course.trial_days }}d Trial</a>
+                    <button class="btn btn-outline-light btn-sm px-3" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+                {% endif %}
+            {% else %}
+                <span class="badge bg-secondary p-2"><i class="bi bi-check-circle me-1"></i> Enrolled</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-3 text-md-end mt-3 mt-md-0">
+        <h4 class="fw-bold m-0">{% if course.is_free %}FREE{% else %}Rs. {{ course.price }}{% endif %}</h4>
+    </div>
+</div>
+
+<div class="row g-3" id="curriculum">
+    <div class="col-lg-4 order-2 order-lg-1">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-header bg-light py-2">
+                <h6 class="fw-bold m-0">Course Curriculum</h6>
+            </div>
+            <div class="accordion accordion-flush" id="curriculumAcc">
+                {% for subject in subjects %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed py-2 fw-bold small" type="button" data-bs-toggle="collapse" data-bs-target="#sub{{subject.id}}">
+                            {{ subject.title }}
+                        </button>
+                    </h2>
+                    <div id="sub{{subject.id}}" class="accordion-collapse collapse">
+                        <div class="accordion-body p-0">
+                            {% for unit in subject.unit_set.all %}
+                                <div class="bg-light px-3 py-1 border-bottom" style="font-size: 0.7rem; color: #666; font-weight: bold;">UNIT: {{ unit.title }}</div>
+                                <ul class="list-group list-group-flush">
+                                    {% for topic in unit.topic_set.all %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center py-2 ps-4" style="font-size: 0.85rem;">
+                                        <span class="text-truncate" style="max-width: 80%;">{{ topic.title }}</span>
+                                        {% if enrollment and is_access_granted %}
+                                            <a href="{% url 'topic_detail' topic.id %}" class="btn btn-sm btn-link p-0 text-primary">Open</a>
+                                        {% else %}
+                                            <i class="bi bi-lock-fill text-muted" style="font-size: 0.75rem;"></i>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-8 order-1 order-lg-2">
+        <div class="card border-0 shadow-sm p-3 mb-3">
+            <h6 class="fw-bold mb-2">About this Course</h6>
+            <div class="text-muted small" style="line-height: 1.6;">
+                {{ course.description|linebreaks }}
+            </div>
+        </div>
+
+        {% if course.is_free %}
+        <div class="card border-0 bg-light-success p-3 border-start border-success border-3">
+            <h6 class="fw-bold text-success mb-1 small"><i class="bi bi-gift-fill me-1"></i> Lifetime Free Benefits</h6>
+            <p class="small text-muted mb-0">Unlimited access to all unit-wise MCQs and study materials forever.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="modal fade" id="buyModal" tabindex="-1">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body text-center py-4">
+                <i class="bi bi-cash-coin text-primary display-6 mb-2"></i>
+                <h6 class="fw-bold">Purchase Course</h6>
+                <p class="small text-muted mb-3">Please contact Admin for eSewa/Khalti payment.</p>
+                <div class="bg-light p-2 rounded fw-bold mb-3 small">WhatsApp: +977-98XXXXXXXX</div>
+                <button class="btn btn-dark btn-sm w-100" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-light-success { background-color: #f0fff4; }
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+        h2 { font-size: 1.5rem !important; }
+        .p-4 { padding: 1.5rem !important; }
+    }
+</style>
+
+{% endblock %}

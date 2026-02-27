@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold m-0">{{ course.title }} Bookmarks</h4>
+        <div class="btn-group rounded-pill shadow-sm overflow-hidden">
+            <a href="?mode=study" class="btn btn-{% if request.GET.mode != 'quiz' %}primary{% else %}light{% endif %} px-4">Study</a>
+            <a href="?mode=quiz" class="btn btn-{% if request.GET.mode == 'quiz' %}primary{% else %}light{% endif %} px-4">Quiz</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            {% for q in questions %}
+            <div class="card border-0 shadow-sm mb-4 rounded-4 overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge bg-info text-dark">{{ q.topic.title }}</span>
+                        <button class="btn btn-link p-0 bookmark-btn" data-id="{{ q.id }}">
+                            <i class="bi bi-bookmark-fill text-primary fs-5"></i>
+                        </button>
+                    </div>
+                    <h5 class="fw-bold mb-4">{{ forloop.counter }}. {{ q.question_text }}</h5>
+                    {% include 'mcq/question_card.html' with q=q %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
