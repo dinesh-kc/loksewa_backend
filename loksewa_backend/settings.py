@@ -20,8 +20,8 @@ import dj_database_url # Import garnuhos
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-Quick-start development settings - unsuitable for production
-See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 
 # 1. Security (Railway le environment variable bata SECRET_KEY linchha)
