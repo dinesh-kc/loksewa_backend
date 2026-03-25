@@ -37,7 +37,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['gklaboratory.com', 'www.gklaboratory.com']
+ALLOWED_HOSTS = ['gklaboratory.com', 'www.gklaboratory.com','127.0.0.1']
 
 
 # Application definition
