@@ -1,0 +1,166 @@
+<!-- templates/public_quiz/public_quiz_info.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quiz.title }} - Quiz Info{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white py-4 text-center">
+                    <h2 class="fw-bold m-0">{{ quiz.title }}</h2>
+                    {% if quiz.description %}
+                    <p class="mt-2 mb-0 opacity-75">{{ quiz.description }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-body p-4">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show rounded-3" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <!-- Quiz Information -->
+                    <div class="alert alert-info rounded-3 d-flex align-items-center mb-4">
+                        <i class="bi bi-info-circle-fill me-3 fs-4"></i>
+                        <div>
+                            <strong class="d-block">Quiz Information</strong>
+                            <span>Total Questions: {{ total_questions }}</span><br>
+                            <small class="text-muted">Time: {{ quiz.time_limit }} minutes total</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Timing Information -->
+                    {% if quiz.start_time %}
+                    <div class="alert {% if quiz.start_time > current_time %}alert-warning{% else %}alert-success{% endif %} rounded-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-calendar-event fs-4 me-3"></i>
+                            <div>
+                                <strong>{% if quiz.start_time > current_time %}Starts{% else %}Started{% endif %}:</strong>
+                                {{ quiz.start_time|date:"F d, Y - h:i A" }}
+                                {% if quiz.start_time > current_time %}
+                                <span class="badge bg-warning ms-2">Not Started</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if quiz.end_time %}
+                    <div class="alert {% if quiz.end_time < current_time %}alert-danger{% else %}alert-info{% endif %} rounded-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-hourglass-split fs-4 me-3"></i>
+                            <div>
+                                <strong>{% if quiz.end_time < current_time %}Ended{% else %}Ends{% endif %}:</strong>
+                                {{ quiz.end_time|date:"F d, Y - h:i A" }}
+                                {% if quiz.end_time < current_time %}
+                                <span class="badge bg-danger ms-2">Ended</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Time Limit Alert -->
+                    <div class="alert alert-info rounded-3 d-flex align-items-center mb-4">
+                        <i class="bi bi-clock-history fs-4 me-3"></i>
+                        <div>
+                            <strong>Time Limit:</strong> {{ quiz.time_limit }} minutes<br>
+                            <small class="text-muted">The timer will start when you begin the quiz</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Quiz Status -->
+                    {% if quiz.start_time and quiz.start_time > current_time %}
+                    <div class="alert alert-warning rounded-3 text-center mb-4">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        This quiz is scheduled to start at <strong>{{ quiz.start_time|date:"h:i A" }}</strong>
+                    </div>
+                    {% elif quiz.end_time and quiz.end_time < current_time %}
+                    <div class="alert alert-danger rounded-3 text-center mb-4">
+                        <i class="bi bi-x-circle-fill me-2"></i>
+                        This quiz has already ended
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-bold">
+                                <i class="bi bi-person"></i> Your Name *
+                            </label>
+                            <input type="text" 
+                                   class="form-control form-control-lg rounded-3" 
+                                   id="name" 
+                                   name="name" 
+                                   required
+                                   placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-bold">
+                                <i class="bi bi-envelope"></i> Email Address *
+                            </label>
+                            <input type="email" 
+                                   class="form-control form-control-lg rounded-3" 
+                                   id="email" 
+                                   name="email" 
+                                   required
+                                   placeholder="your@email.com">
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="mobile" class="form-label fw-bold">
+                                <i class="bi bi-phone"></i> Mobile Number *
+                            </label>
+                            <input type="tel" 
+                                   class="form-control form-control-lg rounded-3" 
+                                   id="mobile" 
+                                   name="mobile" 
+                                   pattern="[0-9]{10}" 
+                                   title="Please enter 10 digit mobile number" 
+                                   required
+                                   placeholder="98XXXXXXXX">
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Enter 10 digit mobile number
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-3">
+                            {% if quiz.end_time and quiz.end_time < current_time %}
+                                <button type="button" class="btn btn-secondary btn-lg rounded-3 py-3" disabled>
+                                    <i class="bi bi-x-circle"></i> Quiz Ended
+                                </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-primary btn-lg rounded-3 py-3">
+                                    <i class="bi bi-play-fill"></i> 
+                                    {% if quiz.start_time and quiz.start_time > current_time %}
+                                        Register for Quiz
+                                    {% else %}
+                                        Start Quiz Now
+                                    {% endif %}
+                                </button>
+                            {% endif %}
+                            <a href="/" class="btn btn-outline-secondary rounded-3 py-2">
+                                <i class="bi bi-house"></i> Back to Home
+                            </a>
+                        </div>
+                    </form>
+                    
+                    <!-- Timezone Notice -->
+                    <div class="text-center mt-3">
+                        <small class="text-muted">
+                            <i class="bi bi-globe"></i> All times are in Nepal Time (NPT)
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

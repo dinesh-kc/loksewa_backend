@@ -1,0 +1,111 @@
+/* Root static/admin/css/public_quiz_admin.css */
+
+/* Quiz link container */
+.quiz-link-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    background: #f8f9fa;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+}
+
+/* Open button */
+.quiz-link-container .btn-open {
+    background: #28a745;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.quiz-link-container .btn-open:hover {
+    background: #218838;
+    text-decoration: none;
+}
+
+/* Copy button */
+.quiz-link-container .btn-copy {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.quiz-link-container .btn-copy:hover {
+    background: #0056b3;
+}
+
+/* Quiz slug display */
+.quiz-link-container .quiz-slug {
+    font-family: monospace;
+    background: #e9ecef;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+}
+
+/* Full URL input in detail view */
+.field-get_full_url_display input {
+    font-family: monospace;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 6px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.field-get_full_url_display button {
+    background: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.field-get_full_url_display button:hover {
+    background: #138496;
+}
+
+/* Toast notification */
+.toast-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    padding: 12px 24px;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}

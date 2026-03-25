@@ -1,9 +1,3 @@
-# from django.urls import path
-# from .views import SubmitQuizView
-
-# urlpatterns = [
-#     path("quiz/submit/", SubmitQuizView.as_view(), name="submit-quiz"),
-# ]
 
 from django.urls import path
 from . import views

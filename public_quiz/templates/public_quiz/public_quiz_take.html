@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quiz.title }} - Take Quiz{% endblock %}
+
+{% block content %}
+<!-- Fixed Header Timer -->
+<div class="fixed-top bg-white shadow-sm py-2 px-3 d-flex justify-content-between align-items-center" style="z-index: 1030;">
+    <div>
+        <h6 class="fw-bold text-primary mb-0">{{ quiz.title|truncatechars:20 }}</h6>
+        <small class="text-muted">{{ attempt.name|truncatechars:15 }}</small>
+    </div>
+    <div class="text-end">
+        <div class="timer-display">
+            <span class="badge bg-danger fs-6" id="timer-display">
+                <i class="bi bi-clock-history me-1"></i>
+                <span id="minutes">00</span>:<span id="seconds">00</span>
+            </span>
+        </div>
+        <div class="progress mt-1" style="height: 3px; width: 100px;">
+            <div class="progress-bar bg-danger" id="progress-bar" role="progressbar" style="width: 100%"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Spacer for fixed header -->
+<div style="height: 70px;"></div>
+
+<!-- Questions Container -->
+<div class="container px-2 px-sm-3 pb-5 mb-5" id="questions-container">
+    <form method="POST" id="quizForm">
+        {% csrf_token %}
+        {% for question in questions %}
+        <div class="card border-0 shadow-sm mb-3 rounded-4">
+            <div class="card-body p-3">
+                <h6 class="fw-bold mb-3">{{ forloop.counter }}. {{ question.question_text }}</h6>
+                <div class="row g-2">
+                    {% for choice in question.choices.all %}
+                    <div class="col-12">
+                        <input type="radio" name="q_{{ question.id }}" value="{{ choice.id }}" class="btn-check" id="c{{ choice.id }}">
+                        <label class="btn btn-outline-secondary w-100 text-start p-2 rounded-3 choice-btn" for="c{{ choice.id }}">
+                            {{ choice.option_text }}
+                        </label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Hidden spacer for bottom button -->
+        <div style="height: 20px;"></div>
+    </form>
+</div>
+
+<!-- Fixed Bottom Submit Button -->
+<div class="fixed-bottom bg-white border-top p-3 shadow-lg" style="z-index: 1030;">
+    <div class="d-grid">
+        <button type="button" class="btn btn-danger btn-lg rounded-3" onclick="return confirmSubmit()">
+            <i class="bi bi-send-check"></i> Submit Quiz
+        </button>
+    </div>
+</div>
+
+<style>
+    /* Hide navigation and other elements */
+    .navbar, footer, .main-content > .container > *:not(.quiz-container) {
+        display: none !important;
+    }
+    body {
+        background-color: #f8f9fa;
+        padding-bottom: 80px; /* space for fixed button */
+    }
+    .btn-check + .choice-btn {
+        user-select: none;
+        white-space: normal;
+        word-wrap: break-word;
+        min-height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    .choice-btn:hover { 
+        background: #f8f9fa; 
+        border-color: #0d6efd; 
+    }
+    .btn-check:checked + .choice-btn { 
+        background: #0d6efd !important; 
+        color: #fff !important; 
+        border-color: #0d6efd;
+    }
+    .timer-display {
+        font-family: monospace;
+    }
+    /* Mobile optimizations */
+    @media (max-width: 576px) {
+        .fixed-top .badge {
+            font-size: 0.85rem !important;
+            padding: 0.4rem 0.6rem !important;
+        }
+        .btn-lg {
+            font-size: 1rem;
+            padding: 0.75rem !important;
+        }
+        h6 {
+            font-size: 0.9rem;
+        }
+        .card-body {
+            padding: 0.75rem !important;
+        }
+        .progress {
+            width: 60px !important;
+        }
+    }
+    /* Disable text selection */
+    * {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+    /* Allow click on labels */
+    .btn-check + label {
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    // Timer and form handling
+    let remainingSeconds = {{ remaining_seconds }};
+    const totalSeconds = {{ time_limit_minutes }} * 60;
+    const minutesSpan = document.getElementById('minutes');
+    const secondsSpan = document.getElementById('seconds');
+    const progressBar = document.getElementById('progress-bar');
+    const timerDisplay = document.getElementById('timer-display');
+    const quizForm = document.getElementById('quizForm');
+
+    function beforeUnloadHandler(e) {
+        e.preventDefault();
+        e.returnValue = 'Are you sure you want to leave? Your progress will be lost.';
+    }
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    function submitForm() {
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+        quizForm.submit();
+    }
+
+    function updateTimer() {
+        if (remainingSeconds <= 0) {
+            submitForm();
+            return;
+        }
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+        minutesSpan.textContent = minutes.toString().padStart(2, '0');
+        secondsSpan.textContent = seconds.toString().padStart(2, '0');
+
+        const percentage = (remainingSeconds / totalSeconds) * 100;
+        progressBar.style.width = percentage + '%';
+
+        // Color coding
+        if (percentage < 20) {
+            progressBar.className = 'progress-bar bg-danger';
+            timerDisplay.className = 'badge bg-danger fs-6';
+        } else if (percentage < 50) {
+            progressBar.className = 'progress-bar bg-warning';
+            timerDisplay.className = 'badge bg-warning fs-6';
+        } else {
+            progressBar.className = 'progress-bar bg-success';
+            timerDisplay.className = 'badge bg-success fs-6';
+        }
+
+        remainingSeconds--;
+        setTimeout(updateTimer, 1000);
+    }
+    updateTimer();
+
+    function confirmSubmit() {
+        const unanswered = [];
+        {% for question in questions %}
+        if (!document.querySelector('input[name="q_{{ question.id }}"]:checked')) {
+            unanswered.push({{ forloop.counter }});
+        }
+        {% endfor %}
+        let shouldSubmit = true;
+        if (unanswered.length > 0) {
+            shouldSubmit = confirm(`You have not answered questions: ${unanswered.join(', ')}. Do you still want to submit?`);
+        } else {
+            shouldSubmit = confirm('Are you sure you want to submit your quiz?');
+        }
+        if (shouldSubmit) {
+            submitForm();
+        }
+        return false;
+    }
+
+    quizForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        confirmSubmit();
+    });
+
+    // Lockdown features
+    (function() {
+        // Disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+
+        // Block back/forward
+        history.pushState(null, null, location.href);
+        window.onpopstate = () => history.go(1);
+
+        // Tab switch warning
+        window.addEventListener('blur', () => document.title = '⚠️ Don\'t leave! - {{ quiz.title }}');
+        window.addEventListener('focus', () => document.title = '{{ quiz.title }} - Take Quiz');
+
+        // Disable keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F5' || 
+                (e.ctrlKey && (e.key === 'r' || e.key === 'R' || e.key === 'w' || e.key === 'W')) ||
+                (e.ctrlKey && e.shiftKey && e.key === 'Tab') ||
+                (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight'))) {
+                e.preventDefault();
+            }
+        });
+    })();
+</script>
+{% endblock %}

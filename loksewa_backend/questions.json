@@ -1,0 +1,124 @@
+```json
+[
+{
+  "topic_id": 3,
+  "question_text": "Which of the following devices can act as both input and output device?",
+  "difficulty": "EASY",
+  "explanation": "A touch screen works as both an input and output device. It displays information (output) and also allows the user to interact by touching the screen (input).",
+  "choices": [
+    {"text": "Printer", "is_correct": false},
+    {"text": "Touch Screen", "is_correct": true},
+    {"text": "Scanner", "is_correct": false},
+    {"text": "Plotter", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which of the following statements about SRAM is correct?",
+  "difficulty": "MEDIUM",
+  "explanation": "SRAM (Static RAM) is faster than DRAM and does not require refreshing. Because of its speed, it is mainly used in CPU cache memory.",
+  "choices": [
+    {"text": "It needs periodic refreshing", "is_correct": false},
+    {"text": "It is slower than DRAM", "is_correct": false},
+    {"text": "It is commonly used in cache memory", "is_correct": true},
+    {"text": "It stores data permanently", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "The speed of a dot matrix printer is usually measured in:",
+  "difficulty": "EASY",
+  "explanation": "Dot matrix printers print characters by striking pins against an ink ribbon. Their speed is measured in CPS (Characters Per Second).",
+  "choices": [
+    {"text": "PPM", "is_correct": false},
+    {"text": "DPI", "is_correct": false},
+    {"text": "CPS", "is_correct": true},
+    {"text": "LPM", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which memory is also known as Read/Write Memory?",
+  "difficulty": "EASY",
+  "explanation": "RAM allows both reading and writing operations while the computer is running.",
+  "choices": [
+    {"text": "ROM", "is_correct": false},
+    {"text": "RAM", "is_correct": true},
+    {"text": "Cache", "is_correct": false},
+    {"text": "Register", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which of the following is NOT part of CPU?",
+  "difficulty": "EASY",
+  "explanation": "CPU consists of Control Unit, ALU and Registers. Hard Disk is a secondary storage device.",
+  "choices": [
+    {"text": "Control Unit", "is_correct": false},
+    {"text": "ALU", "is_correct": false},
+    {"text": "Registers", "is_correct": false},
+    {"text": "Hard Disk", "is_correct": true}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "What is the main function of BIOS during computer startup?",
+  "difficulty": "MEDIUM",
+  "explanation": "BIOS performs hardware initialization and starts the boot process by loading the operating system.",
+  "choices": [
+    {"text": "Load application programs", "is_correct": false},
+    {"text": "Initialize hardware and start boot process", "is_correct": true},
+    {"text": "Format the hard disk", "is_correct": false},
+    {"text": "Increase CPU speed", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which input device was mainly used in early CAD systems?",
+  "difficulty": "MEDIUM",
+  "explanation": "Light pens were widely used in early Computer Aided Design (CAD) systems to draw directly on screens.",
+  "choices": [
+    {"text": "Mouse", "is_correct": false},
+    {"text": "Light Pen", "is_correct": true},
+    {"text": "Joystick", "is_correct": false},
+    {"text": "Trackball", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which storage device has no moving parts?",
+  "difficulty": "EASY",
+  "explanation": "Solid State Drives (SSD) use flash memory chips and contain no mechanical components.",
+  "choices": [
+    {"text": "Hard Disk", "is_correct": false},
+    {"text": "SSD", "is_correct": true},
+    {"text": "Floppy Disk", "is_correct": false},
+    {"text": "Magnetic Tape", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "The number of pixels displayed on a screen horizontally and vertically is known as:",
+  "difficulty": "EASY",
+  "explanation": "Resolution indicates the number of pixels displayed on the screen (for example 1920×1080).",
+  "choices": [
+    {"text": "Color Depth", "is_correct": false},
+    {"text": "Dot Pitch", "is_correct": false},
+    {"text": "Resolution", "is_correct": true},
+    {"text": "Refresh Rate", "is_correct": false}
+  ]
+},
+{
+  "topic_id": 3,
+  "question_text": "Which unit is commonly used to measure the speed of laser printers?",
+  "difficulty": "EASY",
+  "explanation": "Laser printer speed is measured in PPM (Pages Per Minute).",
+  "choices": [
+    {"text": "CPS", "is_correct": false},
+    {"text": "PPM", "is_correct": true},
+    {"text": "DPI", "is_correct": false},
+    {"text": "BPS", "is_correct": false}
+  ]
+}
+]
+```

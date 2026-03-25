@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ quiz.title }} - Quiz Completed{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Thank You Card -->
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4 animate__animated animate__fadeIn">
+                <div class="card-header bg-success text-white py-4 text-center">
+                    <i class="bi bi-check-circle-fill display-4 mb-3"></i>
+                    <h2 class="fw-bold m-0">Thank You for Participating!</h2>
+                    <p class="mt-2 mb-0 opacity-75">{{ quiz.title }}</p>
+                </div>
+                
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-trophy-fill text-warning display-1"></i>
+                    </div>
+                    
+                    <h4 class="fw-bold mb-3">Hello, {{ attempt.name }}!</h4>
+                    
+                    <div class="alert alert-info rounded-3 p-4 mb-4">
+                        <h5 class="fw-bold text-primary mb-3">
+                            <i class="bi bi-megaphone-fill me-2"></i>
+                            Important Announcement!
+                        </h5>
+                        <p class="mb-3">
+                            Your quiz has been successfully submitted. The results will be published on our 
+                            <strong class="text-primary">Facebook Page</strong> very soon!
+                        </p>
+                        
+                        <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                            <i class="bi bi-facebook text-primary fs-1"></i>
+                            <span class="display-6 fw-bold text-primary">{{ facebook_page }}</span>
+                        </div>
+                        
+                        <a href="{{ facebook_url }}" target="_blank" class="btn btn-primary btn-lg rounded-pill px-5">
+                            <i class="bi bi-facebook me-2"></i>
+                            Follow on Facebook
+                        </a>
+                        
+                        <p class="text-muted small mt-3">
+                            <i class="bi bi-clock-history"></i>
+                            Results will be posted within 24-48 hours
+                        </p>
+                    </div>
+                    
+                    <!-- Premium Courses Promotion -->
+                    <div class="card border-0 bg-gradient-primary text-white rounded-4 mb-4 overflow-hidden">
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-8 text-start">
+                                    <h4 class="fw-bold mb-2">
+                                        <i class="bi bi-star-fill me-2"></i>
+                                        Unlock Full Features!
+                                    </h4>
+                                    <p class="mb-3">
+                                        Get detailed analysis, rank predictions, and access to 5000+ practice questions
+                                    </p>
+                                    <ul class="list-unstyled mb-3">
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            Detailed performance analysis
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            Rank prediction & comparison
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            5000+ MCQ questions
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+                                            Weekly mock tests
+                                        </li>
+                                    </ul>
+                                    <a href="{% url 'home' %}" class="btn btn-warning btn-lg rounded-pill px-5">
+                                        <i class="bi bi-cart-check me-2"></i>
+                                        View Courses
+                                    </a>
+                                </div>
+                                <div class="col-md-4 text-center">
+                                    <i class="bi bi-gem display-1 text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Leaderboard Preview (Names Only) -->
+                    {% if leaderboard %}
+                    <div class="card border-0 shadow-sm rounded-4 mb-4">
+                        <div class="card-header bg-dark text-white py-3">
+                            <h5 class="fw-bold m-0">
+                                <i class="bi bi-trophy-fill text-warning me-2"></i>
+                                Top Participants
+                            </h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">#</th>
+                                        <th>Name</th>
+                                        <th class="pe-4 text-end">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for entry in leaderboard %}
+                                    <tr>
+                                        <td class="ps-4 fw-bold">{{ forloop.counter }}</td>
+                                        <td>{{ entry.name }}</td>
+                                        <td class="pe-4 text-end">
+                                            <span class="badge bg-info">Results Pending</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer bg-light text-center py-3">
+                            <p class="text-muted small mb-0">
+                                <i class="bi bi-lock-fill me-1"></i>
+                                Full leaderboard with scores will be published on Facebook
+                            </p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Share Buttons -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3">Share with Friends</h5>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                               target="_blank" class="btn btn-outline-primary rounded-circle p-3">
+                                <i class="bi bi-facebook fs-5"></i>
+                            </a>
+                            <a href="https://api.whatsapp.com/send?text=I just completed a quiz on Smart MCQ! Check it out: {{ request.build_absolute_uri }}" 
+                               target="_blank" class="btn btn-outline-success rounded-circle p-3">
+                                <i class="bi bi-whatsapp fs-5"></i>
+                            </a>
+                            <a href="https://telegram.me/share/url?url={{ request.build_absolute_uri }}&text=I just completed a quiz on Smart MCQ!" 
+                               target="_blank" class="btn btn-outline-info rounded-circle p-3">
+                                <i class="bi bi-telegram fs-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-4">
+                        <a href="{% url 'public_quiz:info' quiz.slug %}" class="btn btn-outline-primary btn-lg rounded-pill px-5">
+                            <i class="bi bi-arrow-repeat me-2"></i>
+                            Take Another Quiz
+                        </a>
+                        <a href="/" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                            <i class="bi bi-house me-2"></i>
+                            Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body { background-color: #f8f9fa; }
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .list-unstyled li i.bi-check-circle-fill {
+        color: #28a745;
+    }
+</style>
+{% endblock %}

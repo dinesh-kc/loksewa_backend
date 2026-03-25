@@ -6,12 +6,15 @@ from rest_framework.routers import DefaultRouter
 
 from django.contrib import admin
 from django.urls import path, include
+from public_quiz.admin_views import export_quiz_results
 
 urlpatterns = [
  path('admin/', admin.site.urls),
+  path('admin/export-quiz-results/', export_quiz_results, name='admin_export_quiz_results'),
     path('', include('courses.urls')),       # Home page र Courses को लागि
     path('quiz/', include('mcq.urls')),      # MCQ र Quiz को लागि
     path('enroll/', include('enrollments.urls')), # Enrollment को लागि
+    path('public_quiz/', include('public_quiz.urls')), # Enrollment को लागि
     # path('accounts/', include('django.contrib.auth.urls')), # Login/Logout को लागि
     path('accounts/', include('accounts.urls')), # This line links your accounts app
     path('accounts/', include('django.contrib.auth.urls')),

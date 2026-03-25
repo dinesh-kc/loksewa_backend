@@ -36,7 +36,8 @@ DEBUG = True
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['gklaboratory.com', 'www.gklaboratory.com']
 
 
 # Application definition
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     'blogs',
     'analytics',
     'import_export',
+    'public_quiz',
 ]
 
 MIDDLEWARE = [
@@ -138,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kathmandu'
 
 USE_I18N = True
 
@@ -149,8 +151,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 
+
+# Static files configuration
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Root static folder
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For collectstatic
 
 
 AUTH_USER_MODEL = 'accounts.User'
