@@ -157,8 +157,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="#">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/articles/">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Blogs</a></li>
                     
                     <li class="nav-item">
                         <a class="nav-link px-3 text-warning" href="{% url 'bookmark_list' %}">
@@ -219,7 +219,8 @@
                             <div class="bg-white bg-opacity-25 rounded-4 p-3 border border-white border-opacity-25 h-100">
                                 <h5 class="fw-bold mb-1">Saturday Quiz 1214</h5>
                                 <p class="small mb-3">General Knowledge & IQ</p>
-                                <a href="http://gklaboratory.com/public_quiz/quiz/saturday-quiz1214/" class="btn btn-light btn-sm rounded-pill px-4 fw-bold">Start Now <i class="bi bi-arrow-right ms-1"></i></a>
+                                <!-- FIXED: Removed hardcoded domain, using relative URL -->
+                                <a href="/public_quiz/quiz/saturday-quiz1214/" class="btn btn-light btn-sm rounded-pill px-4 fw-bold">Start Now <i class="bi bi-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
@@ -232,7 +233,7 @@
     </div>
 
     <div class="mobile-nav">
-        <a href="/" class="mobile-nav-item active">
+        <a href="/" class="mobile-nav-item">
             <i class="bi bi-house-door-fill"></i>
             Home
         </a>
@@ -247,7 +248,8 @@
             <span class="badge bg-danger position-absolute top-0 start-50 translate-middle-x rounded-pill" style="margin-left: 15px;">{{ rev_count }}</span>
             {% endif %}
         </a>
-        <a href="#" class="mobile-nav-item">
+        <!-- FIXED: Changed href="#" to actual profile URL -->
+        <a href="/profile/" class="mobile-nav-item">
             <i class="bi bi-person-circle"></i>
             Profile
         </a>
@@ -260,7 +262,8 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    {% if request.path|slice:":6" == "/admin" %}
+    <!-- FIXED: Improved admin path check -->
+    {% if '/admin' in request.path %}
     <script src="{% static 'admin/js/public_quiz_admin.js' %}"></script>
     {% endif %}
     {% block extra_js %}{% endblock %}
