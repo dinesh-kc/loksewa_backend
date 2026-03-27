@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Online Loksewa MCQ Practice | 10,000+ Questions for Loksewa Exam - GK Lab{% endblock %}
+
+{% block meta_description %}Practice online Loksewa MCQs at GK Lab. Access 10,000+ questions with detailed explanations. Prepare for Loksewa Aayog, TSC, and competitive exams. Start free practice today!{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">Online Loksewa MCQ Practice</h1>
+            <p class="lead mb-4">Practice <strong>10,000+ Loksewa MCQs</strong> online at GK Lab. Get detailed explanations, track your progress, and improve your score with daily practice.</p>
+            <a href="/register/" class="btn btn-primary btn-lg px-5">Start Free MCQ Practice →</a>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row mb-5 text-center">
+        <div class="col-md-4 mb-3">
+            <div class="bg-primary text-white rounded-4 p-4">
+                <h2 class="display-5 fw-bold">10,000+</h2>
+                <p>Practice Questions</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="bg-primary text-white rounded-4 p-4">
+                <h2 class="display-5 fw-bold">25+</h2>
+                <p>Subject Categories</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="bg-primary text-white rounded-4 p-4">
+                <h2 class="display-5 fw-bold">5000+</h2>
+                <p>Active Students</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MCQ Categories -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Practice MCQs by Subject</h2>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/gk-loksewa/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-globe fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">सामान्य ज्ञान</h3>
+                    <p class="small text-muted">1500+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/nepali-grammar/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-book fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">नेपाली व्याकरण</h3>
+                    <p class="small text-muted">800+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/history/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-building fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">नेपालको इतिहास</h3>
+                    <p class="small text-muted">600+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/geography/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-map fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">नेपालको भूगोल</h3>
+                    <p class="small text-muted">500+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/current-affairs/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-newspaper fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">करेन्ट अफेयर्स</h3>
+                    <p class="small text-muted">1000+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/constitution/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-file-text fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">संविधान र कानुन</h3>
+                    <p class="small text-muted">400+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/science/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-flask fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">विज्ञान र प्रविधि</h3>
+                    <p class="small text-muted">600+ Questions</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-3">
+            <a href="/quiz/reasoning/" class="text-decoration-none">
+                <div class="card h-100 text-center p-3 hover-shadow">
+                    <i class="bi bi-lightbulb fs-1 text-primary"></i>
+                    <h3 class="h6 mt-2">तर्कशक्ति</h3>
+                    <p class="small text-muted">500+ Questions</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- How to Practice -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="bg-light rounded-4 p-5">
+                <h2 class="text-center mb-4">How to Practice Loksewa MCQs Effectively?</h2>
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <div class="bg-white rounded-circle p-3 d-inline-block mb-3" style="width: 70px; height: 70px; line-height: 50px;">
+                            <span class="display-6 fw-bold text-primary">1</span>
+                        </div>
+                        <p><strong>Choose Subject</strong><br>Select from 25+ categories</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="bg-white rounded-circle p-3 d-inline-block mb-3" style="width: 70px; height: 70px; line-height: 50px;">
+                            <span class="display-6 fw-bold text-primary">2</span>
+                        </div>
+                        <p><strong>Take Quiz</strong><br>Answer 10-20 questions per set</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="bg-white rounded-circle p-3 d-inline-block mb-3" style="width: 70px; height: 70px; line-height: 50px;">
+                            <span class="display-6 fw-bold text-primary">3</span>
+                        </div>
+                        <p><strong>Review Answers</strong><br>Read detailed explanations</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="bg-white rounded-circle p-3 d-inline-block mb-3" style="width: 70px; height: 70px; line-height: 50px;">
+                            <span class="display-6 fw-bold text-primary">4</span>
+                        </div>
+                        <p><strong>Track Progress</strong><br>Improve your score daily</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="bg-primary text-white rounded-4 p-5">
+                <h2 class="fw-bold">Start Your Loksewa MCQ Practice Today!</h2>
+                <p class="lead mb-4">Join GK Lab for free and access all MCQs. Practice unlimited questions, track performance, and boost your exam score.</p>
+                <a href="/register/" class="btn btn-light btn-lg px-5">Register Free →</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

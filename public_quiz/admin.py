@@ -18,7 +18,23 @@ class PublicQuizQuestionInline(admin.TabularInline):
     ordering = ['order']
 
 class BulkAddQuestionForm(forms.Form):
-    topic = forms.ModelChoiceField(queryset=Topic.objects.all(), required=True, label="Select Topic")
+    topic = forms.ModelChoiceField(
+        queryset=Topic.objects.all(), 
+        required=True, 
+        label="Select Topic",
+        widget=forms.Select(attrs={
+            'class': 'topic-select',
+        })
+    )
+    
+    difficulty = forms.MultipleChoiceField(
+        choices=Question.DIFFICULTY,
+        required=False,
+        label="Filter by Difficulty",
+        help_text="Leave empty to select all difficulties",
+        widget=forms.CheckboxSelectMultiple
+    )
+    
     questions = forms.ModelMultipleChoiceField(
         queryset=Question.objects.none(),
         widget=forms.CheckboxSelectMultiple,
@@ -28,23 +44,40 @@ class BulkAddQuestionForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if 'topic' in self.data:
-            try:
-                topic_id = int(self.data.get('topic'))
-                self.fields['questions'].queryset = Question.objects.filter(topic_id=topic_id).order_by('id')
-            except (ValueError, TypeError):
-                pass
+        
+        # Initialize with empty queryset
+        self.fields['questions'].queryset = Question.objects.none()
+        
+        # If POST data exists, use it to filter questions
+        if self.data:
+            topic_id = self.data.get('topic')
+            difficulty = self.data.getlist('difficulty')
+            
+            if topic_id:
+                try:
+                    topic_id = int(topic_id)
+                    queryset = Question.objects.filter(topic_id=topic_id, is_active=True)
+                    
+                    # Apply difficulty filter if selected
+                    if difficulty:
+                        queryset = queryset.filter(difficulty__in=difficulty)
+                    
+                    # Order by ID for better display
+                    self.fields['questions'].queryset = queryset.order_by('id')
+                        
+                except (ValueError, TypeError):
+                    pass
 
 @admin.register(PublicQuiz)
 class PublicQuizAdmin(admin.ModelAdmin):
-    list_display = ['title', 'topic', 'is_active', 'question_count', 'attempt_count', 'created_at', 'display_quiz_link']
+    list_display = ['display_title', 'topic', 'is_active', 'question_count', 'attempt_count', 'created_at', 'display_quiz_link']
     list_filter = ['is_active', 'topic', 'created_at']
-    search_fields = ('title', 'topic__name')
+    search_fields = ('title', 'topic__name', 'topic__title')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [PublicQuizQuestionInline]
     readonly_fields = ['created_at']
     actions = ['bulk_add_questions_action', 'export_quiz_attempts']
-
+    
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'description', 'topic', 'is_active')
@@ -63,6 +96,11 @@ class PublicQuizAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+    
+    def display_title(self, obj):
+        return format_html('<strong>{}</strong>', obj.title)
+    display_title.short_description = 'Quiz Title'
+    display_title.admin_order_field = 'title'
 
     def get_urls(self):
         urls = super().get_urls()
@@ -85,43 +123,131 @@ class PublicQuizAdmin(admin.ModelAdmin):
 
     def bulk_add_questions_view(self, request, quiz_id):
         quiz = get_object_or_404(PublicQuiz, id=quiz_id)
-
+        
+        # Initialize variables
+        topic_id = None
+        selected_difficulties = []
+        
         if request.method == 'POST':
+            # Check if this is an add action or filter action
+            is_add_action = 'add_questions' in request.POST
+            
             form = BulkAddQuestionForm(request.POST)
+            
+            # Populate questions queryset based on POST data
             topic_id = request.POST.get('topic')
+            selected_difficulties = request.POST.getlist('difficulty')
+            
             if topic_id:
-                form.fields['questions'].queryset = Question.objects.filter(topic_id=topic_id).order_by('id')
-            if form.is_valid():
-                questions = form.cleaned_data['questions']
-                existing_ids = set(PublicQuizQuestion.objects.filter(quiz=quiz).values_list('question_id', flat=True))
-                added = 0
-                max_order = PublicQuizQuestion.objects.filter(quiz=quiz).aggregate(Max('order'))['order__max'] or 0
-                for q in questions:
-                    if q.id not in existing_ids:
-                        max_order += 1
-                        PublicQuizQuestion.objects.create(quiz=quiz, question=q, order=max_order)
-                        added += 1
-                messages.success(request, f"Added {added} questions to '{quiz.title}'.")
-                return HttpResponseRedirect(reverse('admin:public_quiz_publicquiz_change', args=[quiz.id]))
+                try:
+                    queryset = Question.objects.filter(topic_id=topic_id, is_active=True)
+                    if selected_difficulties:
+                        queryset = queryset.filter(difficulty__in=selected_difficulties)
+                    form.fields['questions'].queryset = queryset.order_by('id')
+                except (ValueError, TypeError):
+                    pass
+            
+            if is_add_action:
+                # This is the actual submission to add questions
+                if form.is_valid():
+                    questions = form.cleaned_data['questions']
+                    
+                    if not questions:
+                        messages.warning(request, "No questions selected. Please select at least one question.")
+                    else:
+                        # Get existing questions to avoid duplicates
+                        existing_ids = set(PublicQuizQuestion.objects.filter(
+                            quiz=quiz
+                        ).values_list('question_id', flat=True))
+                        
+                        # Get current max order
+                        max_order = PublicQuizQuestion.objects.filter(
+                            quiz=quiz
+                        ).aggregate(Max('order'))['order__max'] or 0
+                        
+                        added = 0
+                        skipped = 0
+                        
+                        for q in questions:
+                            if q.id not in existing_ids:
+                                max_order += 1
+                                PublicQuizQuestion.objects.create(
+                                    quiz=quiz, 
+                                    question=q, 
+                                    order=max_order
+                                )
+                                added += 1
+                            else:
+                                skipped += 1
+                        
+                        # Show success message
+                        msg = f"Successfully added {added} questions to '{quiz.title}'."
+                        if skipped > 0:
+                            msg += f" Skipped {skipped} duplicate question(s)."
+                        
+                        messages.success(request, msg)
+                        
+                    return HttpResponseRedirect(
+                        reverse('admin:public_quiz_publicquiz_change', args=[quiz.id])
+                    )
+                else:
+                    # Form is invalid, show errors
+                    for field, errors in form.errors.items():
+                        for error in errors:
+                            messages.error(request, f"{field}: {error}")
             else:
+                # This is just filtering (apply filters)
+                # Show info message about filtered results
                 if topic_id:
-                    form.fields['questions'].queryset = Question.objects.filter(topic_id=topic_id).order_by('id')
+                    count = form.fields['questions'].queryset.count()
+                    if count > 0:
+                        messages.info(request, f"Found {count} question(s) matching your criteria.")
+                    else:
+                        messages.warning(request, f"No questions found for the selected topic and difficulty filters.")
         else:
-            form = BulkAddQuestionForm(request.GET or None)
+            # GET request - initial form
             topic_id = request.GET.get('topic')
+            selected_difficulties = request.GET.getlist('difficulty')
+            
             if topic_id:
-                form.fields['questions'].queryset = Question.objects.filter(topic_id=topic_id).order_by('id')
-                if form.fields['questions'].queryset.count() == 0:
-                    messages.warning(request, "No questions found for this topic. Please select another topic.")
-
+                # Create form with GET data
+                form = BulkAddQuestionForm(request.GET)
+                try:
+                    queryset = Question.objects.filter(topic_id=topic_id, is_active=True)
+                    if selected_difficulties:
+                        queryset = queryset.filter(difficulty__in=selected_difficulties)
+                    form.fields['questions'].queryset = queryset.order_by('id')
+                except (ValueError, TypeError):
+                    form = BulkAddQuestionForm()
+            else:
+                form = BulkAddQuestionForm()
+        
+        # Prepare context for template
         context = {
             'quiz': quiz,
             'form': form,
             'title': f'Bulk add questions to {quiz.title}',
             'opts': self.model._meta,
+            'total_questions': 0,
+            'filtered_count': 0,
         }
+        
+        # Calculate counts for display
+        if topic_id:
+            try:
+                all_questions = Question.objects.filter(topic_id=topic_id, is_active=True)
+                filtered_questions = all_questions
+                
+                if selected_difficulties:
+                    filtered_questions = all_questions.filter(difficulty__in=selected_difficulties)
+                
+                context['total_questions'] = all_questions.count()
+                context['filtered_count'] = filtered_questions.count()
+            except (ValueError, TypeError):
+                pass
+        
         return render(request, 'admin/public_quiz/bulk_add_questions.html', context)
-
+    
     def display_quiz_link(self, obj):
         if obj.pk:
             url = reverse('public_quiz:info', kwargs={'slug': obj.slug})
@@ -152,16 +278,16 @@ class PublicQuizAdmin(admin.ModelAdmin):
             response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
             writer = csv.writer(response)
-            writer.writerow(['Quiz Title', 'Topic', 'Name', 'Email', 'Mobile', 'Score', 'Correct', 'Wrong', 'Skipped', 'Completed Date'])
+            writer.writerow(['Quiz Title', 'Quiz ID', 'Topic', 'Name', 'Email', 'Mobile', 'Score', 'Correct', 'Wrong', 'Skipped', 'Completed Date'])
 
             for quiz in queryset:
-                # Safely get topic name (Topic model likely uses 'title')
+                # Safely get topic name
                 topic_name = 'No Topic'
                 if quiz.topic:
-                    if hasattr(quiz.topic, 'title'):
-                        topic_name = str(quiz.topic.title)
-                    elif hasattr(quiz.topic, 'name'):
+                    if hasattr(quiz.topic, 'name'):
                         topic_name = str(quiz.topic.name)
+                    elif hasattr(quiz.topic, 'title'):
+                        topic_name = str(quiz.topic.title)
                     else:
                         topic_name = str(quiz.topic)
 
@@ -179,6 +305,7 @@ class PublicQuizAdmin(admin.ModelAdmin):
 
                     writer.writerow([
                         str(quiz.title),
+                        str(quiz.id),
                         topic_name,
                         str(attempt.name),
                         str(attempt.email),

@@ -360,7 +360,7 @@ def public_quiz_result(request, slug):
             'attempt': attempt,
             'leaderboard': leaderboard,  # Will show only names, not scores
             'facebook_page': 'GKLaboratory',  # Your Facebook page name
-            'facebook_url': 'https://facebook.com/gklaboratory',  # Update this
+            'facebook_url': 'https://www.facebook.com/people/GK-Laboratory/100090362160712/',  # Update this
         })
         
     except Exception as e:

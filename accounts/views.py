@@ -29,3 +29,31 @@ def register_view(request):
     else:
         form = RegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+
+
+
+def about_page(request):
+    return render(request, 'about.html')
+
+def contact_page(request):
+    return render(request, 'contact.html')
+
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')
+
+def terms_of_service(request):
+    return render(request, 'terms_of_service.html')
+
+
+
+def loksewa_preparation(request):
+    """Landing page for Loksewa preparation"""
+    return render(request, 'loksewa_preparation.html')
+
+def online_loksewa_class(request):
+    """Landing page for online Loksewa classes"""
+    return render(request, 'online_loksewa_class.html')
+
+def online_loksewa_mcq(request):
+    """Landing page for online Loksewa MCQ practice"""
+    return render(request, 'online_loksewa_mcq.html')

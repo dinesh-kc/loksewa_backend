@@ -7,6 +7,18 @@ from rest_framework.routers import DefaultRouter
 from django.contrib import admin
 from django.urls import path, include
 from public_quiz.admin_views import export_quiz_results
+from django.views.generic import TemplateView
+from accounts.views import loksewa_preparation, online_loksewa_class, online_loksewa_mcq
+
+from django.contrib.sitemaps.views import sitemap
+from .sitemap import StaticViewSitemap  # import your sitemaps
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    # 'articles': ArticleSitemap,  # if you have articles
+}
+
+
 
 urlpatterns = [
  path('admin/', admin.site.urls),
@@ -18,6 +30,14 @@ urlpatterns = [
     # path('accounts/', include('django.contrib.auth.urls')), # Login/Logout को लागि
     path('accounts/', include('accounts.urls')), # This line links your accounts app
     path('accounts/', include('django.contrib.auth.urls')),
+
+    # New SEO Landing Pages
+    path('loksewa-preparation/', loksewa_preparation, name='loksewa_preparation'),
+    path('online-loksewa-class/', online_loksewa_class, name='online_loksewa_class'),
+    path('online-loksewa-mcq/', online_loksewa_mcq, name='online_loksewa_mcq'),
+     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+
+        path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 

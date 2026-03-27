@@ -5,18 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
-    <title>GK Lab | Smart MCQ & Exam Preparation</title>
-    <meta name="description" content="Master your exams with GK Lab. The ultimate platform for smart MCQ practice, live quizzes, and daily revision. Challenge yourself and track your progress!">
+    <!-- Dynamic Title - Changes based on page -->
+    <title>{% block title %}GK Lab | Best Online Loksewa Preparation Institute in Nepal | Online Loksewa Class & MCQ Practice{% endblock %}</title>
     
+    <!-- Primary Meta Description - Target Keywords -->
+    <meta name="description" content="{% block meta_description %}GK Lab is Nepal's best online Loksewa preparation institute. Join online Loksewa classes, practice 10,000+ MCQs, get expert guidance for Loksewa Aayog, TSC, and competitive exams. Start free today!{% endblock %}">
+    
+    <!-- Keywords for SEO (Optional but helpful) -->
+    <meta name="keywords" content="loksewa preparation, online loksewa class, loksewa aayog preparation, online loksewa mcq, gklab, gklaboratory, loksewa preparation institute nepal, loksewa online class, loksewa mcq practice, nepal loksewa, सामान्य ज्ञान, नेपाली व्याकरण">
+    
+    <meta name="author" content="GK Lab">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Nepali, English">
+    <meta name="geo.region" content="NP">
+    <meta name="geo.placename" content="Nepal">
+    
+    <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://gklaboratory.com/">
-    <meta property="og:title" content="🚀 GK Lab - Master Your MCQ Preparation">
-    <meta property="og:description" content="Join the smartest way to learn! Real-time public quizzes, daily revision sets, and expert-curated MCQs all in one place.">
+    <meta property="og:title" content="GK Lab | Best Online Loksewa Preparation Institute in Nepal">
+    <meta property="og:description" content="Join Nepal's best online Loksewa preparation institute. Practice 10,000+ MCQs, attend live classes, and get expert guidance for Loksewa Aayog exams.">
     <meta property="og:image" content="https://scontent.fmey2-1.fna.fbcdn.net/v/t39.30808-6/485723517_636243396064394_1228417083876337416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGnQOoMblfJVjz0QbC0jqqgIBcainWTgzUgFxqKdZODNa99LAZ6NO5sqqzTqQ2nRBMXhmOn-x4DItt5296dwihQ&_nc_ohc=w9foqaIIv5UQ7kNvwETDf3h&_nc_oc=AdqVgaRG5WoX-P0VW1g6dKLsRGk4WTrD9X4F264RHYtf4bSpB9Ynwm335pO_GpO_Llg&_nc_zt=23&_nc_ht=scontent.fmey2-1.fna&_nc_gid=aWEASni0Fh0al7rbYfEcgw&_nc_ss=7a32e&oh=00_AfyUk5-MIRegZZlZMG5Bpip7UuzBSN8DWM_89bxgk169pQ&oe=69C9871B">
+    <meta property="og:image:alt" content="GK Lab - Online Loksewa Preparation Institute Nepal">
     
+    <!-- Twitter Card Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="GK Lab | Smart MCQ Preparation">
-    <meta property="twitter:description" content="The ultimate platform for smart MCQ practice and daily revision.">
+    <meta property="twitter:title" content="GK Lab | Best Online Loksewa Preparation Institute Nepal">
+    <meta property="twitter:description" content="Join GK Lab - Nepal's best online Loksewa preparation institute. Practice MCQs, attend live classes, prepare for Loksewa Aayog exams.">
     <meta property="twitter:image" content="https://scontent.fmey2-1.fna.fbcdn.net/v/t39.30808-6/485723517_636243396064394_1228417083876337416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGnQOoMblfJVjz0QbC0jqqgIBcainWTgzUgFxqKdZODNa99LAZ6NO5sqqzTqQ2nRBMXhmOn-x4DItt5296dwihQ&_nc_ohc=w9foqaIIv5UQ7kNvwETDf3h&_nc_oc=AdqVgaRG5WoX-P0VW1g6dKLsRGk4WTrD9X4F264RHYtf4bSpB9Ynwm335pO_GpO_Llg&_nc_zt=23&_nc_ht=scontent.fmey2-1.fna&_nc_gid=aWEASni0Fh0al7rbYfEcgw&_nc_ss=7a32e&oh=00_AfyUk5-MIRegZZlZMG5Bpip7UuzBSN8DWM_89bxgk169pQ&oe=69C9871B">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -138,7 +153,112 @@
             .mobile-nav { display: none; }
             body { padding-bottom: 0; }
         }
+
+        /* Footer links styling */
+        .footer-link {
+            color: #64748b;
+            text-decoration: none;
+            transition: color 0.2s;
+            margin: 0 10px;
+        }
+        
+        .footer-link:hover {
+            color: var(--accent);
+        }
+        
+        @media (max-width: 768px) {
+            .footer-links-mobile {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Hero Section Styling - New for SEO */
+        .hero-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-badge {
+            background: white;
+            border-radius: 60px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
     </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8T3BN3BZQ8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-8T3BN3BZQ8');
+    </script>
+    
+    <!-- Organization Schema for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "GK Lab",
+        "alternateName": "GKLaboratory",
+        "url": "https://gklaboratory.com",
+        "logo": "https://gklaboratory.com/static/logo.png",
+        "description": "Best online Loksewa preparation institute in Nepal offering live classes, MCQ practice, and study materials for Loksewa Aayog, TSC, and competitive exams.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Kathmandu",
+            "addressCountry": "NP"
+        },
+        "sameAs": [
+            "https://facebook.com/gklaboratory"
+        ],
+        "makesOffer": {
+            "@type": "Offer",
+            "itemOffered": {
+                "@type": "Course",
+                "name": "Loksewa Preparation Course",
+                "description": "Comprehensive online Loksewa preparation with live classes and MCQ practice",
+                "provider": {
+                    "@type": "Organization",
+                    "name": "GK Lab"
+                }
+            }
+        }
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://gklaboratory.com/"
+        }]
+    }
+    </script>
+    
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
@@ -146,7 +266,7 @@
         <div class="container">
             <a class="navbar-brand fw-extrabold d-flex align-items-center" href="/">
                 <img src="https://scontent.fmey2-1.fna.fbcdn.net/v/t39.30808-6/485723517_636243396064394_1228417083876337416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGnQOoMblfJVjz0QbC0jqqgIBcainWTgzUgFxqKdZODNa99LAZ6NO5sqqzTqQ2nRBMXhmOn-x4DItt5296dwihQ&_nc_ohc=w9foqaIIv5UQ7kNvwETDf3h&_nc_oc=AdqVgaRG5WoX-P0VW1g6dKLsRGk4WTrD9X4F264RHYtf4bSpB9Ynwm335pO_GpO_Llg&_nc_zt=23&_nc_ht=scontent.fmey2-1.fna&_nc_gid=aWEASni0Fh0al7rbYfEcgw&_nc_ss=7a32e&oh=00_AfyUk5-MIRegZZlZMG5Bpip7UuzBSN8DWM_89bxgk169pQ&oe=69C9871B" 
-                     alt="GK Lab Logo" class="navbar-logo">
+                     alt="GK Lab - Online Loksewa Preparation Institute Nepal" class="navbar-logo">
                 <span class="tracking-tighter">GK Lab</span>
             </a>
             
@@ -157,8 +277,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/loksewa-preparation/">Loksewa Prep</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/online-loksewa-class/">Live Classes</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="/articles/">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Tips</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Vacancy</a></li>
                     
                     <li class="nav-item">
                         <a class="nav-link px-3 text-warning" href="{% url 'bookmark_list' %}">
@@ -202,6 +325,77 @@
 
     <div class="container py-4">
         {% if request.path == "/" %}
+        <!-- New SEO-Optimized Hero Section -->
+        <div class="hero-section animate__animated animate__fadeInUp">
+            <div class="text-center mb-4">
+                <span class="stat-badge">
+                    <i class="bi bi-trophy-fill text-warning"></i> Nepal's #1 Online Loksewa Platform
+                </span>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">Best Online Loksewa Preparation Institute in Nepal</h1>
+                    <p class="lead mb-4">Join <strong>GK Lab</strong>, Nepal's trusted platform for <strong>online Loksewa class</strong> and <strong>MCQ practice</strong>. Prepare for Loksewa Aayog, TSC, and competitive exams with expert-curated content.</p>
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+                        <a href="/loksewa-preparation/" class="btn btn-primary btn-lg px-4">Start Loksewa Preparation →</a>
+                        <a href="/online-loksewa-mcq/" class="btn btn-outline-primary btn-lg px-4">Free MCQ Practice</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5 text-center">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-badge d-inline-block">
+                        <i class="bi bi-people-fill text-primary"></i> 5,000+ Students
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-badge d-inline-block">
+                        <i class="bi bi-question-circle-fill text-primary"></i> 10,000+ MCQs
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-badge d-inline-block">
+                        <i class="bi bi-star-fill text-warning"></i> 4.9/5 Rating
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Why Choose GK Lab for Loksewa Preparation?</h2>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-laptop fs-1 text-primary"></i>
+                        <h3 class="h5 mt-3">Expert-Curated MCQs</h3>
+                        <p class="text-muted">10,000+ questions designed specifically for Loksewa Aayog exams covering all subjects.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-camera-reels fs-1 text-primary"></i>
+                        <h3 class="h5 mt-3">Online Loksewa Classes</h3>
+                        <p class="text-muted">Live interactive classes with expert faculty. Recorded sessions available anytime.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-check fs-1 text-primary"></i>
+                        <h3 class="h5 mt-3">Daily Practice Sets</h3>
+                        <p class="text-muted">New MCQs daily. Track progress with detailed performance analytics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Original Quiz Card Section (Preserved) -->
         <div class="row animate__animated animate__fadeInUp">
             <div class="col-12">
                 <div class="quiz-card-premium shadow">
@@ -219,8 +413,64 @@
                             <div class="bg-white bg-opacity-25 rounded-4 p-3 border border-white border-opacity-25 h-100">
                                 <h5 class="fw-bold mb-1">Saturday Quiz 1214</h5>
                                 <p class="small mb-3">General Knowledge & IQ</p>
-                                <!-- FIXED: Removed hardcoded domain, using relative URL -->
                                 <a href="/public_quiz/quiz/saturday-quiz1214/" class="btn btn-light btn-sm rounded-pill px-4 fw-bold">Start Now <i class="bi bi-arrow-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section for SEO -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Frequently Asked Questions About Loksewa Preparation</h2>
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                Is GK Lab a recognized Loksewa preparation institute in Nepal?
+                            </button>
+                        </h3>
+                        <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, GK Lab is one of Nepal's leading online platforms for Loksewa Aayog preparation. Trusted by thousands of students across Nepal, we offer comprehensive study materials, expert-curated MCQs, and live online classes.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                How can I join online Loksewa classes at GK Lab?
+                            </button>
+                        </h3>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Simply register for free at gklaboratory.com to access our MCQ sets. For live online Loksewa classes, check our course section or contact us for enrollment details. All classes are recorded for later revision.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                What subjects are covered in Loksewa preparation?
+                            </button>
+                        </h3>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                We cover all major subjects for Loksewa Aayog: General Knowledge (सामान्य ज्ञान), Nepali Grammar (नेपाली व्याकरण), Nepal History (नेपालको इतिहास), Nepal Geography (नेपालको भूगोल), Current Affairs (करेन्ट अफेयर्स), and more.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                Are there free MCQs for Loksewa practice?
+                            </button>
+                        </h3>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes! GK Lab offers hundreds of free MCQs for Loksewa preparation. Start practicing immediately with our free MCQ sets covering all subjects. Upgrade to premium for full access.
                             </div>
                         </div>
                     </div>
@@ -237,6 +487,10 @@
             <i class="bi bi-house-door-fill"></i>
             Home
         </a>
+        <a href="/loksewa-preparation/" class="mobile-nav-item">
+            <i class="bi bi-mortarboard-fill"></i>
+            Loksewa
+        </a>
         <a href="{% url 'bookmark_list' %}" class="mobile-nav-item">
             <i class="bi bi-bookmark-heart-fill"></i>
             Bookmarks
@@ -248,21 +502,38 @@
             <span class="badge bg-danger position-absolute top-0 start-50 translate-middle-x rounded-pill" style="margin-left: 15px;">{{ rev_count }}</span>
             {% endif %}
         </a>
-        <!-- FIXED: Changed href="#" to actual profile URL -->
         <a href="/profile/" class="mobile-nav-item">
             <i class="bi bi-person-circle"></i>
             Profile
         </a>
     </div>
 
-    <footer class="bg-white border-top py-4 mt-5 d-none d-lg-block">
-        <div class="container text-center text-muted small">
-            <p class="mb-0">&copy; 2026 GK Lab Beta 1.0. All Rights Reserved.</p>
+    <!-- Enhanced Footer with Essential Pages for AdSense -->
+    <footer class="bg-white border-top py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="footer-links-mobile mb-3">
+                        <a href="{% url 'about' %}" class="footer-link">About Us</a>
+                        <span class="text-muted">•</span>
+                        <a href="{% url 'contact' %}" class="footer-link">Contact</a>
+                        <span class="text-muted">•</span>
+                        <a href="/loksewa-preparation/" class="footer-link">Loksewa Preparation</a>
+                        <span class="text-muted">•</span>
+                        <a href="/online-loksewa-class/" class="footer-link">Online Loksewa Class</a>
+                        <span class="text-muted">•</span>
+                        <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
+                        <span class="text-muted">•</span>
+                        <a href="{% url 'terms_of_service' %}" class="footer-link">Terms of Service</a>
+                    </div>
+                    <p class="text-muted small mb-0">&copy; 2026 GK Lab | Best Online Loksewa Preparation Institute in Nepal. All Rights Reserved.</p>
+                    <p class="text-muted small mt-2">Empowering learners with smart MCQ preparation and daily revision tools for Loksewa Aayog and competitive exams.</p>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- FIXED: Improved admin path check -->
     {% if '/admin' in request.path %}
     <script src="{% static 'admin/js/public_quiz_admin.js' %}"></script>
     {% endif %}

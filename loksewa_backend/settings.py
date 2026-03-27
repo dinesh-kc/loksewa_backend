@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     'analytics',
     'import_export',
     'public_quiz',
+      'django.contrib.sitemaps',
+
 ]
 
 MIDDLEWARE = [
@@ -182,3 +184,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = '/'
+
+
+# Add these lines to your settings.py file
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
