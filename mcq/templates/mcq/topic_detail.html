@@ -77,7 +77,7 @@
                             <span class="text-primary me-2">
                                 {{ forloop.counter0|add:questions.start_index }}.
                             </span>
-                            {{ q.question_text }}
+                            {{ q.question_text|linebreaks  }}
                         </h5>
 
                         <!-- Options -->
@@ -101,7 +101,7 @@
                                     </div>
 
                                     <span class="small fw-medium">
-                                        {{ choice.option_text }}
+                                        {{ choice.option_text |linebreaks  }}
                                     </span>
                                 </div>
                             </div>
@@ -121,14 +121,14 @@
                                         Correct Answer:
                                         {% for choice in q.choices.all %}
                                             {% if choice.is_correct %}
-                                                {{ choice.option_text }}
+                                                {{ choice.option_text |linebreaks  }}
                                             {% endif %}
                                         {% endfor %}
                                     </h6>
 
                                     {% if q.explanation %}
                                     <div class="small text-muted mt-2 border-top pt-2">
-                                        <strong>Explanation:</strong> {{ q.explanation }}
+                                        <strong>Explanation:</strong> {{ q.explanation |linebreaks  }}
                                     </div>
                                     {% endif %}
                                 </div>
