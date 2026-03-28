@@ -17,7 +17,7 @@
 
         <h5 class="fw-bold mb-4" style="line-height: 1.6; font-size: 1.15rem;">
             <span class="text-primary me-2">{{ forloop.counter }}.</span> 
-            {{ q.question_text }}
+            {{ q.question_text |linebreaks }}
         </h5>
 
         <div class="row g-3">
@@ -27,7 +27,7 @@
                     <div class="choice-circle me-3">
                         {% if forloop.counter == 1 %}A{% elif forloop.counter == 2 %}B{% elif forloop.counter == 3 %}C{% elif forloop.counter == 4 %}D{% else %}{{ forloop.counter }}{% endif %}
                     </div>
-                    <span class="small fw-medium">{{ choice.option_text }}</span>
+                    <span class="small fw-medium">{{ choice.option_text |linebreaks }}</span>
                 </div>
             </div>
             {% endfor %}
@@ -44,12 +44,12 @@
                     <h6 class="fw-bold text-success mb-2">
                         <i class="bi bi-check-circle-fill me-2"></i>Correct Answer: 
                         {% for choice in q.choices.all %}
-                            {% if choice.is_correct %}{{ choice.option_text }}{% endif %}
+                            {% if choice.is_correct %}{{ choice.option_text |linebreaks  }}{% endif %}
                         {% endfor %}
                     </h6>
                     {% if q.explanation %}
                     <div class="small text-muted mb-0 mt-2 border-top pt-2">
-                        <strong>Explanation:</strong> {{ q.explanation }}
+                        <strong>Explanation:</strong> {{ q.explanation |linebreaks  }}
                     </div>
                     {% endif %}
                 </div>
