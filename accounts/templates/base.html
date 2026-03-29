@@ -12,7 +12,7 @@
     <meta name="description" content="{% block meta_description %}GK Lab is Nepal's best online Loksewa preparation institute. Join online Loksewa classes, practice 10,000+ MCQs, get expert guidance for Loksewa Aayog, TSC, and competitive exams. Start free today!{% endblock %}">
     
     <!-- Keywords for SEO (Optional but helpful) -->
-    <meta name="keywords" content="loksewa preparation, online loksewa class, loksewa aayog preparation, online loksewa mcq, gklab, gklaboratory, loksewa preparation institute nepal, loksewa online class, loksewa mcq practice, nepal loksewa, सामान्य ज्ञान, नेपाली व्याकरण">
+    <meta name="keywords" content="{% block meta_keywords %}loksewa preparation, online loksewa class, loksewa aayog preparation, online loksewa mcq, gklab, gklaboratory, loksewa preparation institute nepal, loksewa online class, loksewa mcq practice, nepal loksewa, सामान्य ज्ञान, नेपाली व्याकरण{% endblock %}">
     
     <meta name="author" content="GK Lab">
     <meta name="robots" content="index, follow">
@@ -22,16 +22,16 @@
     
     <!-- Open Graph Meta Tags -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://gklaboratory.com/">
-    <meta property="og:title" content="GK Lab | Best Online Loksewa Preparation Institute in Nepal">
-    <meta property="og:description" content="Join Nepal's best online Loksewa preparation institute. Practice 10,000+ MCQs, attend live classes, and get expert guidance for Loksewa Aayog exams.">
+    <meta property="og:url" content="{% block og_url %}https://gklaboratory.com/{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}GK Lab | Best Online Loksewa Preparation Institute in Nepal{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Join Nepal's best online Loksewa preparation institute. Practice 10,000+ MCQs, attend live classes, and get expert guidance for Loksewa Aayog exams.{% endblock %}">
     <meta property="og:image" content="https://scontent.fmey2-1.fna.fbcdn.net/v/t39.30808-6/485723517_636243396064394_1228417083876337416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGnQOoMblfJVjz0QbC0jqqgIBcainWTgzUgFxqKdZODNa99LAZ6NO5sqqzTqQ2nRBMXhmOn-x4DItt5296dwihQ&_nc_ohc=w9foqaIIv5UQ7kNvwETDf3h&_nc_oc=AdqVgaRG5WoX-P0VW1g6dKLsRGk4WTrD9X4F264RHYtf4bSpB9Ynwm335pO_GpO_Llg&_nc_zt=23&_nc_ht=scontent.fmey2-1.fna&_nc_gid=aWEASni0Fh0al7rbYfEcgw&_nc_ss=7a32e&oh=00_AfyUk5-MIRegZZlZMG5Bpip7UuzBSN8DWM_89bxgk169pQ&oe=69C9871B">
     <meta property="og:image:alt" content="GK Lab - Online Loksewa Preparation Institute Nepal">
     
     <!-- Twitter Card Meta Tags -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:title" content="GK Lab | Best Online Loksewa Preparation Institute Nepal">
-    <meta property="twitter:description" content="Join GK Lab - Nepal's best online Loksewa preparation institute. Practice MCQs, attend live classes, prepare for Loksewa Aayog exams.">
+    <meta property="twitter:title" content="{% block twitter_title %}GK Lab | Best Online Loksewa Preparation Institute Nepal{% endblock %}">
+    <meta property="twitter:description" content="{% block twitter_description %}Join GK Lab - Nepal's best online Loksewa preparation institute. Practice MCQs, attend live classes, prepare for Loksewa Aayog exams.{% endblock %}">
     <meta property="twitter:image" content="https://scontent.fmey2-1.fna.fbcdn.net/v/t39.30808-6/485723517_636243396064394_1228417083876337416_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=2a1932&_nc_eui2=AeGnQOoMblfJVjz0QbC0jqqgIBcainWTgzUgFxqKdZODNa99LAZ6NO5sqqzTqQ2nRBMXhmOn-x4DItt5296dwihQ&_nc_ohc=w9foqaIIv5UQ7kNvwETDf3h&_nc_oc=AdqVgaRG5WoX-P0VW1g6dKLsRGk4WTrD9X4F264RHYtf4bSpB9Ynwm335pO_GpO_Llg&_nc_zt=23&_nc_ht=scontent.fmey2-1.fna&_nc_gid=aWEASni0Fh0al7rbYfEcgw&_nc_ss=7a32e&oh=00_AfyUk5-MIRegZZlZMG5Bpip7UuzBSN8DWM_89bxgk169pQ&oe=69C9871B">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -277,11 +277,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item"><a class="nav-link px-3" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="/loksewa-preparation/">Loksewa Prep</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="/online-loksewa-class/">Live Classes</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/loksewa-preparation/">TIPS</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/online-loksewa-class/">Courses</a></li>
                     <li class="nav-item"><a class="nav-link px-3" href="/articles/">Articles</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Tips</a></li>
-                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Vacancy</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/blogs/">Blogs</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="/loksewa-vacancy-nepal/">Vacancy</a></li>
                     
                     <li class="nav-item">
                         <a class="nav-link px-3 text-warning" href="{% url 'bookmark_list' %}">
@@ -520,7 +520,7 @@
                         <span class="text-muted">•</span>
                         <a href="/loksewa-preparation/" class="footer-link">Loksewa Preparation</a>
                         <span class="text-muted">•</span>
-                        <a href="/online-loksewa-class/" class="footer-link">Online Loksewa Class</a>
+                        <a href="/online-loksewa-class/" class="footer-link">Courses</a>
                         <span class="text-muted">•</span>
                         <a href="{% url 'privacy_policy' %}" class="footer-link">Privacy Policy</a>
                         <span class="text-muted">•</span>

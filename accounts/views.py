@@ -12,8 +12,12 @@ class RegisterView(generics.CreateAPIView):
 # accounts/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
+from django.db.models import Count
 from .forms import RegisterForm # तपाईंको Custom User भएमा
 from django.contrib import messages
+
+from courses.models import Course
+from enrollments.models import Enrollment
 
 
 
@@ -51,8 +55,35 @@ def loksewa_preparation(request):
     return render(request, 'loksewa_preparation.html')
 
 def online_loksewa_class(request):
-    """Landing page for online Loksewa classes"""
-    return render(request, 'online_loksewa_class.html')
+    """Landing page for online Loksewa classes — lists active courses from the database."""
+    base_qs = (
+        Course.objects.filter(is_active=True)
+        .annotate(subject_count=Count("subject"))
+        .order_by("-created_at")
+    )
+    enrolled_courses = Course.objects.none()
+    browse_courses = base_qs
+
+    if request.user.is_authenticated:
+        enrolled_ids = list(
+            Enrollment.objects.filter(user=request.user, is_active=True).values_list(
+                "course_id", flat=True
+            )
+        )
+        if enrolled_ids:
+            enrolled_courses = base_qs.filter(id__in=enrolled_ids)
+            browse_courses = base_qs.exclude(id__in=enrolled_ids)
+        else:
+            browse_courses = base_qs
+
+    return render(
+        request,
+        "online_loksewa_class.html",
+        {
+            "enrolled_courses": enrolled_courses,
+            "browse_courses": browse_courses,
+        },
+    )
 
 def online_loksewa_mcq(request):
     """Landing page for online Loksewa MCQ practice"""
